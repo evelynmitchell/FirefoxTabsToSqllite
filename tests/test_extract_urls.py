@@ -1,0 +1,32 @@
+def test_extract_urls_from_all_tabs(self):
+    """Extract URLs from all open tabs in all windows"""
+    import os
+    import json
+    from unittest import mock
+    import lz4.block
+
+    # Mocking the os.path.expanduser and os.path.join to return a fixed path
+    with mock.patch('os.path.expanduser', return_value='/mocked/home'):
+        with mock.patch('os.path.join', side_effect=lambda *args: '/'.join(args)):
+            # Mocking the open function to simulate reading profiles.ini and sessionstore.jsonlz4
+            def mock_open(file, mode='r'):
+                if 'profiles.ini' in file:
+                    return mock.mock_open(read_data='Path=mocked_profile').return_value
+                elif 'sessionstore.jsonlz4' in file:
+                    # Simulating a decompressed JSON content
+                    decompressed_data = json.dumps({
+                        'windows': [
+                            {
+                                'tabs': [
+                                    {'entries': [{'url': 'http://example.com'}]}
+                                ]
+                            }
+                        ]
+                    }).encode('utf-8')
+                    compressed_data = b'mozLz40\0' + lz4.block.compress(decompressed_data)
+                    return mock.mock_open(read_data=compressed_data).return_value
+                raise FileNotFoundError
+
+            with mock.patch('builtins.open', mock_open):
+                urls = get_firefox_tabs()
+                assert urls == ['http://example.com']

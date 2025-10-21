@@ -1,0 +1,9 @@
+[project]
+name = "FirefoxTabsToSqllite"
+version = "0.1.0"
+readme = "README.md"
+dependencies = ["sqlite3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

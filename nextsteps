@@ -1,0 +1,31 @@
+Great — glad it worked. Next recommended actions:
+
+1. Push the extracted FirefoxTabsToSqllite repo to GitHub:
+   - cd /workspaces/FirefoxTabsToSqllite
+   - git remote add origin git@github.com:evelynmitchell/FirefoxTabsToSqllite.git (if remote not set)
+   - git push -u origin HEAD
+   - Note: GitHub authentication (SSH key or PAT) is required.
+
+2. Verify CI runs after push:
+   - Open the repository on GitHub and check Actions; the existing .github/workflows/ci.yml will trigger automatically.
+
+3. Add status badges to README:
+   - Add a GitHub Actions badge and coverage badge (use shields.io) to README.md and commit.
+
+4. Install pre-commit hooks (Black, Ruff):
+   - Create .pre-commit-config.yaml with Black and Ruff entries.
+   - python -m pip install pre-commit
+   - pre-commit install
+   - Run pre-commit on all files: pre-commit run --all-files
+
+5. Run tests and linters locally:
+   - python -m pytest
+   - ruff check .
+   - black --check .
+
+6. Continue repository cleanup and extraction:
+   - Update Summary/repository_catalog.md with final decisions.
+   - Create new repos for other candidate projects and repeat push + CI setup.
+
+If you want, tell me which of the above to run next and I’ll provide exact config snippets or commands.
+gpt-5
